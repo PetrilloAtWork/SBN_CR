@@ -1,17 +1,23 @@
 #!/bin/bash
-
 echo "GRAFANA CONNECTION TERMINAL"
+
+MiddlePort=10080
 
 # Checks if the no web option is passed, allowing a user with Firefox to explicitly choose to not use it.
 noweb=0
 
-if [ "$#" -gt "0" ]
-then
-    if [ $1 == "-noweb" ]
-    then
-      noweb=1
-    fi
-fi
+while [ "$#" -gt "0" ]
+do
+    case "$1" in
+      ( '-noweb' )
+        noweb=1
+	;;
+      ( * )
+        MiddlePort="$1"
+	;;
+    esac
+    shift
+done
 
 # Check the OS
 osName=`uname -a | awk '{print $1}'`
@@ -41,7 +47,11 @@ then
 	echo ""
 	echo ""
 
+<<<<<<< Updated upstream
         ssh -KL localhost:10089:localhost:10080 icarus@icarus-gateway01.fnal.gov 'ssh -KL localhost:10080:localhost:10080 icarus@icarus-evb06.fnal.gov'
+=======
+        ssh -KL localhost:10080:localhost:${MiddlePort} icarus@icarus-gateway01.fnal.gov "ssh -KL localhost:${MiddlePort}:localhost:10080 icarus@icarus-db02.fnal.gov"
+>>>>>>> Stashed changes
     fi
 fi
 
@@ -68,7 +78,7 @@ then
     echo ""
     echo ""
     echo ""
-    ssh -KL localhost:10089:localhost:10080 icarus@icarus-gateway01.fnal.gov 'ssh -KL localhost:10080:localhost:10080 icarus@icarus-evb06.fnal.gov'
+    ssh -KL localhost:10089:localhost:${MiddlePort} icarus@icarus-gateway01.fnal.gov "ssh -KL localhost:${MiddlePort}:localhost:10080 icarus@icarus-evb06.fnal.gov"
 fi
 
 if [ $osName == "Linux" ]
@@ -94,5 +104,5 @@ then
     echo ""
     echo ""
     echo ""
-    ssh -KL localhost:10089:localhost:10080 icarus@icarus-gateway01.fnal.gov 'ssh -KL localhost:10080:localhost:10080 icarus@icarus-evb06.fnal.gov'
+    ssh -KL localhost:10089:localhost:${MiddlePort} icarus@icarus-gateway01.fnal.gov "ssh -KL localhost:${MiddlePort}:localhost:10080 icarus@icarus-evb06.fnal.gov"
 fi
